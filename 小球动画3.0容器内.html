@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.con {
+				width: 500px;
+				height: 300px;
+				border: solid 10px yellowgreen;
+				position: relative;
+			}
+			.ball{
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				background: plum;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="con">
+			<div class="ball"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var con = document.querySelector('.con')
+		var ball = document.querySelector('.ball')
+		
+		setInterval(move,15)
+		
+		var stepX = 3;
+		var stepY = 2;
+		
+		function move(){
+			var l = ball.offsetLeft;
+			var t = ball.offsetTop;
+			
+			var maxWidth = con.clientWidth - ball.offsetWidth ;
+			var maxHeight = con.clientHeight - ball.offsetHeight
+			
+			var ml = l + stepX;
+			var mt = t + stepY;
+			
+			if(ml >= maxWidth){
+				stepX *= -1;
+				ml = maxWidth;
+				ball.style.background = ranColor()
+			}else if(ml <= 0){
+				stepX *= -1;
+				ml = 0;
+				ball.style.background = ranColor()
+			}
+			
+			if(mt >= maxHeight){
+				stepY *= -1;
+				mt = maxHeight;
+				ball.style.background = ranColor()
+			}else if(mt <= 0){
+				stepY *= -1;
+				mt = 0;
+				ball.style.background = ranColor()
+			}
+			
+			ball.style.left = ml + "px";
+			ball.style.top = mt + "px";
+		}
+		
+		
+		//随机色
+		function ranColor(){
+			var r = Math.round(Math.random()* 255)
+			var g = Math.round(Math.random()* 255)
+			var b = Math.round(Math.random()* 255)
+			
+			return "rgb(" + r + "," + g + "," + b + ")";
+		}
+		
+		//窗口检测
+		window.onresize = function(){
+			maxWidth = document.documentElement.clientWidth;
+			maxHeight = document.documentElement.clientHeight;
+		}
+	</script>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>拖拽</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				width: 100px;
+				height: 100px;
+				text-align: center;
+				position: absolute;
+				top: 1px;
+				color: white;
+				font-size: 20px;
+			}
+			.left{
+				left: 1px;
+				background: forestgreen;
+			}
+			.right{
+				right: 0;
+				background: blueviolet;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrrap" style="width: 500px;height: 500px;border: solid 1px greenyellow;box-sizing: border-box;">
+			
+		</div>
+		<div id="div1" class="box left">
+			div1
+		</div>
+		<div id="div2" class="box right">
+			div2
+		</div>
+	</body>
+	<script type="text/javascript">
+		//普通拖拽
+		class Drag{
+			constructor(id){
+				this.oDiv = document.querySelector(id);
+				this.disX = 0;
+				this.disY = 0;
+				this.init();
+			}
+			init(){
+				this.oDiv.onmousedown = function(ev){
+					this.disX = ev.clientX - this.oDiv.offsetLeft;
+					this.disY = ev.clientY - this.oDiv.offsetTop;
+					
+					document.onmousemove = this.fnMove.bind(this);
+					document.onmouseup = this.fnUp.bind(this);
+					
+					return false;
+				}.bind(this)
+			}
+			fnMove(ev){
+				this.oDiv.style.left = ev.clientX - this.disX+'px';
+				this.oDiv.style.top = ev.clientY - this.disY+'px';
+			}
+			fnUp(ev){
+				document.onmousemove = null;
+				this.onmouseup = null;
+			}
+		}
+		
+		
+		//限制范围拖拽
+		class LimitDrag extends Drag{
+			fnMove(ev){
+				super.fnMove(ev);
+				
+				if(this.oDiv.offsetLeft<=0){
+					this.oDiv.style.left=0;
+				}
+				if(this.oDiv.offsetTop<=0){
+					this.oDiv.style.top=0;
+				}
+				
+				let maxL = document.documentElement.clientWidth-this.oDiv.clientWidth-1;
+				let maxT = document.documentElement.clientHeight-this.oDiv.clientWidth-1;
+				
+				if(this.oDiv.offsetLeft>maxL){
+					this.oDiv.style.left=maxL +'px';
+				}
+				if(this.oDiv.offsetTop>maxT){
+					this.oDiv.style.top=maxT +'px';
+				}
+			}
+		}
+		
+		class LimitWrapDrag extends Drag{
+			fnMove(ev){
+				super.fnMove(ev);
+				
+				if(this.oDiv.offsetLeft<=1){
+					this.oDiv.style.left=1+'px';
+				}
+				if(this.oDiv.offsetTop<=1){
+					this.oDiv.style.top=1+'px';
+				}
+				
+				let wrap = document.querySelector('#wrrap')
+				let maxL = wrap.clientWidth-this.oDiv.clientWidth+1;
+				let maxT = wrap.clientHeight-this.oDiv.clientWidth+1;
+				
+				if(this.oDiv.offsetLeft>maxL){
+					this.oDiv.style.left=maxL +'px';
+				}
+				if(this.oDiv.offsetTop>maxT){
+					this.oDiv.style.top=maxT +'px';
+				}
+			}
+		}
+		
+		new LimitWrapDrag("#div1")
+		new LimitDrag("#div2")
+		
+		
+	</script>
+</html>
