@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+
+	<body>
+
+	</body>
+	<script type="text/javascript">
+	
+    
+    var allDayArr = [{'note':'111111111111','allDayFlag':'0','beginDate':'2020-03-10','endDate':'2020-03-10','beginTime':'07:30:00','endTime':'12:30:00','repeatFlag':'每周','remindFlag':'提前5分钟','address':'北京市','privacyFlag':'0','createUserId':'111001','createUserName':'张三','memo':'备注内容11111111111111111111111111111111','receivedUsers':[{'userId':'111001','userName':'张三'},{'userId':'111002','userName':'李四'},{'userId':'111003','userName':'王五'}]}, ]
+		
+	//基本的使用实例
+    ajax({
+        url:"http://localhost:8080/daily/DailyListServlet",
+        type:'post',
+        data:allDayArr[0],
+        dataType:'json',
+        timeout:10000,
+        contentType:"text/plain",
+        success:function(data){
+　　　　　　console.log(data)//服务器返回响应，根据响应结果，分析是否登录成功
+        },
+        //异常处理
+        error:function(e){
+            console.log(e);
+        }
+    })
+    
+    
+	function ajax(options){
+        options = options ||{};  //调用函数时如果options没有指定，就给它赋值{},一个空的Object
+        options.type=(options.type || "GET").toUpperCase();/// 请求格式GET、POST，默认为GET
+        options.dataType=options.dataType || "json";    //响应数据格式，默认json
+
+        var params=JSON.stringify(options.data);//options.data请求的数据
+//      var params=formatParams(options.data);//options.data请求的数据
+		console.log(params)
+
+        var xhr;
+
+        //考虑兼容性
+        if(window.XMLHttpRequest){
+            xhr=new XMLHttpRequest();
+        }else if(window.ActiveObject){//兼容IE6以下版本
+            xhr=new ActiveXobject('Microsoft.XMLHTTP');
+        }
+
+        //启动并发送一个请求
+        if(options.type=="GET"){
+            xhr.open("GET",options.url+"?"+params,true);
+            xhr.send(null);
+        }else if(options.type=="POST"){
+            xhr.open("post",options.url,true);
+
+            //设置表单提交时的内容类型
+            //Content-type数据请求的格式
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xhr.send(params);
+        }
+
+    //    设置有效时间
+        setTimeout(function(){
+            if(xhr.readySate!=4){
+                xhr.abort();
+            }
+        },options.timeout)
+
+    //    接收
+    //     options.success成功之后的回调函数  options.error失败后的回调函数
+    //xhr.responseText,xhr.responseXML  获得字符串形式的响应数据或者XML形式的响应数据
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+                var status=xhr.status;
+                if(status>=200&& status<300 || status==304){
+                  options.success&&options.success(xhr.responseText,xhr.responseXML);
+                }else{
+                    options.error&&options.error(status);
+                }
+            }
+        }
+    }
+
+    //格式化请求参数
+    function formatParams(data){
+        var arr=[];
+        for(var name in data){
+            arr.push(encodeURIComponent(name)+"="+encodeURIComponent(data[name]));
+        }
+        arr.push(("v="+Math.random()).replace(".",""));
+        return arr.join("&");
+
+    }
+			
+
+	</script>
+	<!--<script type="text/javascript">
+		var obj = {'note':'111111111111','allDayFlag':'1','beginDate':'2020-03-10','endDate':'2020-03-10','beginTime':'07:30:00','endTime':'12:30:00','repeatFlag':'1','remindFlag':'1','address':'北京市','privacyFlag':'1','createUserId':'111001','createUserName':'张三','memo':'备注内容11111111111111111111111111111111','receivedUsers':[{'userId':'111001','userName':'张三'},{'userId':'111002','userName':'李四'},{'userId':'111003','userName':'王五'}]}
+			
+		var dataJson=JSON.stringify(obj)
+		
+		ajax({
+			url: "http://localhost:8080/daily/DailySaveServlet",
+			method: "post",
+			data: dataJson,
+			success: function(data) {
+				console.log(data)
+			}
+		})
+
+		function ajax(opt) {
+			console.log(opt)
+			opt = opt || {};
+			opt.method = opt.method.toUpperCase() || "post";
+			opt.url = opt.url || "";
+			opt.async = opt.async || true;
+			opt.data = opt.data || null;
+			opt.success = opt.success || function() {};
+			var xmlHttp = null;
+			if(XMLHttpRequest) {
+				xmlHttp = new XMLHttpRequest();
+			} else {
+				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			var params = [];
+			for(var key in opt.data) {
+				params.push(key + "=" + opt.data[key]);
+			}
+			var postData = params.join("&");
+			if(opt.method.toUpperCase() === "POST") {
+				xmlHttp.open(opt.method, opt.url, opt.async);
+				xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+				xmlHttp.send(postData)
+			} else if(opt.method.toUpperCase() === "GET") {
+				xmlHttp.open(opt.method, opt.url + "?" + postData, opt.async);
+				xmlHttp.send(null)
+			}
+			xmlHttp.onreadystatechange = function() {
+				if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+					opt.success(xmlHttp.responseText)
+				}
+			}
+		}
+	</script>-->
+</html>

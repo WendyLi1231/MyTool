@@ -1,0 +1,1203 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel='stylesheet' href='./date.css' />
+		<script src="My97DatePicker/WdatePicker.js"></script>
+
+		<title>demo</title>
+	</head>
+
+	<body>
+
+
+		<!--日历页头部-->
+		<div class="header sHeader">
+			<div class="leftIco">
+				<!--<i class="left"></i>-->
+			</div>
+			<div class="header-title">
+				日程
+			</div>
+			<!--新建日程按钮-->
+			<div class="header-save add-schedule" onclick="toSchedulePage()">&#43;</div>
+		</div>
+
+		<!--日历页面-->
+		<div class='calendar' id='calendar'></div>
+		<!--收缩的日历-->
+		<div id="monitor">
+			<table id="calendarTable" class="calendar-table">
+				<tr>
+					<th>日</th>
+					<th>一</th>
+					<th>二</th>
+					<th>三</th>
+					<th>四</th>
+					<th>五</th>
+					<th>六</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+			<div class="showDate" onclick="showDate()">
+				<div class="upIco"><i class="up"></i></div>
+			</div>
+		</div>
+
+		<!--日程列表-->
+		<div class="schedule-list">
+			<div class="sch-list-day">
+				<span class="day"></span><span class="week"></span>
+			</div>
+			<div class="allDayList">
+				<ul>
+				</ul>
+			</div>
+			<ul class="sch-list">
+			</ul>
+		</div>
+
+		<!--列表详情页面-->
+		<div class="detail-page">
+			<div class="schedule-part">
+				<div class="header">
+					<div class="leftIco" onclick="toHome()"><i class="left"></i></div>
+					<div class="header-title">
+						日程详情
+					</div>
+					<div class="header-save" style="top: -8px;" onclick="delOrchange()">
+						<span style="font-size: 28px;word-spacing: 12px;">&hellip;</span>
+					</div>
+				</div>
+				<div class="shadow"></div>
+			</div>
+
+			<div class="schedule-content">
+
+			</div>
+		</div>
+
+		<!--新建日程按钮-->
+		<!--<div class="add-schedule" onclick="toSchedulePage()">&#43;</div>-->
+
+		<!--新建日程页面-->
+		<div class="schedule-page">
+			<div class="schedule-part">
+				<div class="header">
+					<div class="leftIco" onclick="toHome()"><i class="left"></i></div>
+					<div class="header-title">
+						新建日程
+					</div>
+					<div class="header-save"  onclick="addSubmit()">
+						完成
+					</div>
+				</div>
+				<div class="shadow"></div>
+			</div>
+
+			<div class="schedule-content">
+				<div class="schedule-title">
+					<textarea class="title addNote" required="required" placeholder="请输入日程内容" name="" rows="" cols=""></textarea>
+				</div>
+				<div class="shadow"></div>
+
+				<div class="schedule-form remind-time">
+					<div class="remind-allDay">全天</div>
+					<input type="checkbox" class="checke addAllday">
+				</div>
+
+				<div class="remind-select">
+					<div class="select-time start">
+						<p>开始</p>
+						<input type="text" class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+					</div>
+					<div class="select-time end">
+						<p>结束</p>
+						<input type="text" class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+					</div>
+				</div>
+				<div class="shadow"></div>
+
+				<div class="schedule-form remind-time">
+					<div class="remind-allDay">提醒</div>
+					<div class="select-before" onclick="showPop(remindArr,1,1)">
+						<span class="remind-flag addRemind">日程开始时</span>
+						<div class="rightIco"><i class="right"></i></div>
+					</div>
+				</div>
+
+				<div class="schedule-form remind-time">
+					<div class="remind-allDay">重复</div>
+					<div class="select-before" onclick="showPop(repeatArr,2,1)">
+						<span class="repeat-flag addRepeat">不重复</span>
+						<div class="rightIco"><i class="right"></i></div>
+					</div>
+				</div>
+				<div class="schedule-form">
+					<input type="text" class="iptText address addPlace" placeholder="地点" name="" id="" value="" />
+				</div>
+				<div class="shadow"></div>
+
+				<div class="schedule-form remind-time receivedUser" onclick="showPop(receivedArr,3)">
+					<div class="remind-allDay">接收人</div>
+					<div class="select-before">
+						<div class="rightIco"><i class="right"></i></div>
+					</div>
+				</div>
+				<div class="schedule-form privacy">
+					<div class="remind-allDay">私密性</div>
+					<div class="privacyRadio">
+						<label>
+		  			<input type="radio" name="addPrivacy" id="" value="私人" />
+		  			<span>私人</span>
+		  		</label>
+						<label>
+		  			<input type="radio" name="addPrivacy" id="" value="公开" />
+		  			<span>公开</span>
+		  		</label>
+					</div>
+				</div>
+
+				<div class="shadow"></div>
+
+				<div class="schedule-title">
+					<textarea class="title" id="addMemo" placeholder="添加备注" name="" rows="" cols=""></textarea>
+				</div>
+			</div>
+		</div>
+
+		<!--修改日程-->
+		<div class="change-page schedule-page">
+			<div class="schedule-part">
+				<div class="header">
+					<div class="leftIco" onclick="toHome()"><i class="left"></i></div>
+					<div class="header-title">
+						修改日程
+					</div>
+					<div class="header-save" onclick="submitChange()">
+						完成
+					</div>
+				</div>
+				<div class="shadow"></div>
+			</div>
+
+			<div class="schedule-content">
+				<div class="schedule-title">
+					<textarea class="title changeNote" placeholder="请输入日程内容" name="" rows="" cols=""></textarea>
+				</div>
+				<div class="shadow"></div>
+
+				<div class="schedule-form remind-time">
+					<div class="remind-allDay">全天</div>
+					<input type="checkbox" class="checke changeAllday">
+				</div>
+
+				<div class="remind-select">
+					<div class="select-time start">
+						<p>开始</p>
+						<input type="text" class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+					</div>
+					<div class="select-time end">
+						<p>结束</p>
+						<input type="text" class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+					</div>
+				</div>
+				<div class="shadow"></div>
+
+				<div class="schedule-form remind-time">
+					<div class="remind-allDay">提醒</div>
+					<div class="select-before" onclick="showPop(remindArr,1,2)">
+						<span class="remind-flag changeRemind">日程开始时</span>
+						<div class="rightIco"><i class="right"></i></div>
+					</div>
+				</div>
+
+				<div class="schedule-form remind-time">
+					<div class="remind-allDay">重复</div>
+					<div class="select-before" onclick="showPop(repeatArr,2,2)">
+						<span class="repeat-flag changeRepeat">不重复</span>
+						<div class="rightIco"><i class="right"></i></div>
+					</div>
+				</div>
+
+				<div class="schedule-form">
+					<input type="text" class="iptText address changePlace" placeholder="地点" value="" />
+				</div>
+				<div class="shadow"></div>
+
+				<div class="schedule-form remind-time receivedUser" onclick="showPop(receivedArr,3)">
+					<div class="remind-allDay">接收人</div>
+					<div class="select-before">
+						<div class="rightIco"><i class="right"></i></div>
+					</div>
+				</div>
+				<div class="schedule-form privacy">
+					<div class="remind-allDay">私密性</div>
+					<div class="privacyRadio">
+						<label>
+		  			<input type="radio" name="changePrivacy" id="" value="私人" />
+		  			<span>私人</span>
+		  		</label>
+						<label>
+		  			<input type="radio" name="changePrivacy" id="" value="公开" />
+		  			<span>公开</span>
+		  		</label>
+					</div>
+				</div>
+
+				<div class="shadow"></div>
+
+				<div class="schedule-title">
+					<textarea class="title" placeholder="添加备注" id="changeMemo" name="" rows="" cols=""></textarea>
+				</div>
+			</div>
+		</div>
+		<!--弹框-->
+		<div class="pop-up">
+			<div class="pop-wrap">
+				<div class="pop-check">
+					<div class="cancel" onclick="closePop()">取消</div>
+					<div class="confirm" onclick="popConfirm()">确定</div>
+				</div>
+				<ul class="pop-list">
+				</ul>
+			</div>
+		</div>
+
+		<!--删除修改-->
+		<div class="del-change">
+			<p onclick="delSchedel()">删除</p>
+			<p onclick="chSchedel()">修改</p>
+		</div>
+
+	</body>
+	<script type='text/javascript' src='./date.js'></script>
+	<script src="./jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var allDayList = document.querySelector(".allDayList>ul");  //全天日程
+		var schList = document.querySelector(".sch-list"); //非全天日程
+		
+		var calendar = document.getElementById("calendar"); //整个日历
+		var monitor = document.getElementById("monitor");  //缩减日历
+		var sHeader = document.querySelector(".sHeader");  //日历头部
+		var schedulePage = document.querySelector(".schedule-page");  //新建日程
+		var scheduleList = document.querySelector(".schedule-list");  //日程列表
+		var detailPage = document.querySelector(".detail-page");  //日程详情
+		var delChange = document.querySelector(".del-change");   //删除修改弹框
+		var changePage = document.querySelector(".change-page");  //修改日程
+		var detailObj = {};  //选中的日程ID
+		var changeSubData = {};
+		var addSubData = {};
+		var submitBtn = 0;
+		
+		var requestObj = {};
+
+		//日程列表渲染
+		getDateList()
+		//显示日程
+		function getDateList() {
+			var allDayArr = [];
+			var schListArr = [];
+			var userId = JSON.stringify({
+				"userId": "111001"
+			});
+			$.ajax({
+	        url:"http://localhost:8080/daily/DailyListServlet",
+	        contentType:"text/plain",
+	        data: userId,
+	        dataType:"json",
+	        type:"POST",
+	        success:function (data) {
+							//console.log("日程列表查询DailyListServlet:",data)
+							var totalArr = data.content;
+							//console.log(totalArr)
+	            //let totalArr = JSON.parse(data);
+	            for (var i = 0; i < totalArr.length; i++) {
+	            	if(totalArr[i].allDayFlag == 1){
+	            		schListArr.push(totalArr[i])
+
+	            	}else{
+						allDayArr.push(totalArr[i])
+	            		
+	            	}
+	            }
+							
+			renderAlldayList(allDayArr)
+			renderDateList(schListArr)
+	        }
+	    })
+
+
+		};
+
+
+//新增日程项目
+		var addNote = document.querySelector(".addNote");
+		var addAllday = document.querySelector(".addAllday");
+		var addRemind = document.querySelector(".addRemind");
+		var addRepeat = document.querySelector(".addRepeat");
+		var addPlace = document.querySelector(".addPlace");
+		var addReceivedUser = document.querySelector(".schedule-page .receivedUser");
+		var addPrivacy  = document.getElementsByName("addPrivacy");
+		var addMemo = document.querySelector("#addMemo");
+		
+		//新增日程提交
+		function addSubmit(){
+		    submitBtn = 1;
+			var create_start=document.getElementsByClassName("Wdate")[0].value;
+			var create_end=document.getElementsByClassName("Wdate")[1].value;
+//			console.log(create_start,create_end)
+			
+			if(addNote.value == ""){
+				addSubData.note = "(无标题)";
+			}else{
+				addSubData.note = addNote.value;
+			}
+			
+			if(addAllday.checked == true){
+				addSubData.allDayFlag = "0";
+			}else{
+				addSubData.allDayFlag = "1";
+			}
+			addSubData.beginDate = create_start.substr(0,10);
+			addSubData.beginTime = create_start.substr(11);
+			addSubData.endDate = create_end.substr(0,10);
+			addSubData.endTime = create_end.substr(11);
+			
+			//结束日期不能晚于开始日期，同一天结束时间不能晚于开始时间
+			let saveFlag = validTime(addSubData.beginDate,addSubData.endDate,addSubData.beginTime,addSubData.endTime)
+			//选择全天，时间为00:00:00-23:59:59
+			if(addAllday.checked == true){
+				addSubData.beginTime="00:00:00";
+				addSubData.endTime="23:59:59";
+			}
+			
+			
+			
+			addSubData.remindFlag = fmRemindFlag(addRemind.innerHTML);
+			addSubData.repeatFlag = fmRepeatFlag(addRepeat.innerHTML);
+			addSubData.address = addPlace.value;
+			
+			if(requestObj.receivedUsers == undefined){
+			addSubData.receivedUsers = JSON.stringify(
+			[{userId:"111001",userName:"张三",flag:true}]);
+			}else{
+			requestObj.receivedUsers.push(
+			{userId:"111001",userName:"张三",flag:true});
+			addSubData.receivedUsers = JSON.stringify(requestObj.receivedUsers);
+			}			
+			console.log(requestObj)
+			let subprivacyVal;
+			for (var i = 0; i < addPrivacy.length; i++) {
+				if(addPrivacy[i].checked == true){
+					subprivacyVal = addPrivacy[i].value;
+				}
+			}
+			if(subprivacyVal == "私人"){
+				addSubData.privacyFlag = "0";
+			}else{
+				addSubData.privacyFlag = "1";
+			}
+			//接收人
+			addSubData.memo = addMemo.value;
+			addSubData.createUserId="";
+			addSubData.createUserName="";
+			
+			
+			
+			var jsonString = JSON.stringify(addSubData);
+			if(saveFlag && submitBtn == 1){
+			console.log(addSubData)
+			$.ajax({
+	        url:"http://localhost:8080/daily/DailySaveServlet",
+	        contentType:"text/plain",
+	        data: jsonString,
+	        dataType:"json",
+	        type:"POST",
+	        success:function (data) {
+						console.log("新增提交DailySaveServlet:",data)
+	        	if(data.flag == "true"){
+							schedulePage.style.display = "none";
+							getDateList();
+							toHome();
+	        	}
+}
+	    })
+			}
+			
+
+////////////////////////////
+//			showDateIndex(addSubData)
+		}
+		//打开新建其他页面隐藏
+		function toSchedulePage() {
+			calendar.style.display = "none";
+			monitor.style.display = "none";
+			sHeader.style.display = "none";
+			scheduleList.style.display = "none";
+			schedulePage.style.display = "block";
+			
+			addNote.value = "";
+			addRemind.innerHTML = "日程开始时";
+			addRepeat.innerHTML = "不重复";
+			addAllday.checked = false;
+			addPlace.value = "";
+			addMemo.value = "";
+			//日期时间默认当前
+			var create_start = document.getElementsByClassName("Wdate")[0];
+			var create_end = document.getElementsByClassName("Wdate")[1];
+			let _date= new Date();
+			let year = _date.getFullYear();
+			let month = (_date.getMonth() + 1)>9 ? (_date.getMonth() + 1):("0"+(_date.getMonth() + 1));
+			let gDate = (_date.getDate()>9) ? _date.getDate():("0"+_date.getDate());
+			let time = _date.toTimeString()
+			let now = year+"-"+month+"-"+gDate+" "+time.substr(0,8)
+			//console.log(now)
+			create_start.value = now;
+			create_end.value = now;
+			
+			//私密性默认私密
+			for (var i = 0; i < addPrivacy.length; i++) {
+				if(addPrivacy[i].value == "私人"){
+					addPrivacy[i].checked = true;
+				}
+			}
+			//新建前清空接收人
+			requestObj = {};
+			
+			//查询接收人列表
+			var jsonString = JSON.stringify({
+				"userId": "111001"
+			});
+			$.ajax({
+	        url:"http://localhost:8080/daily/UserListServlet",
+	        contentType:"text/plain",
+	        data: jsonString,
+	        dataType:"json",
+	        type:"POST",
+	        success:function (data) {
+				//console.log("新增接收人列表查询UserListServlet:",data)
+				receivedArr = data.users	
+				for (var k = 0; k < receivedArr.length; k++) {
+						receivedArr[k].flag = false;
+					}						
+				}
+	    })
+				//console.log(receivedArr)
+		}
+
+		//返回首页
+		function toHome() {
+			calendar.style.display = "block";
+			scheduleList.style.display = "block";
+			sHeader.style.display = "flex";
+			scheduleList.style.display = "block";
+			schedulePage.style.display = "none";
+			detailPage.style.display = "none";
+			changePage.style.display = "none";
+			delChange.style.display = "none";
+			getDateList()
+		}
+		//日历缩小
+		window.onscroll = function() {
+			var scrollTop = document.documentElement.scrollTop;
+			var height = document.documentElement.clientWidth || document.documentElement.clientHeight;
+			if(scrollTop > 100) {
+				monitor.style.display = "block";
+				calendar.style.display = "none";
+			}
+		}
+		//日历展开
+		function showDate() {
+			monitor.style.display = "none";
+			calendar.style.display = "block";
+		}
+		
+	
+		//显示日程详情
+		function showDateIndex(obj) {
+		//查询日程详情
+			var DetailString  = JSON.stringify({"calendarId":obj.calendarId});
+			$.ajax({
+	        url:"http://localhost:8080/daily/DailyDetailServlet",
+	        contentType:"text/plain",
+	        data: DetailString,
+	        dataType:"json",
+	        type:"POST",
+	        success:function (data) {
+
+				var _remind = data.content[0].remindFlag
+
+				detailObj = data.content[0];
+
+			let _start = new Date(detailObj.beginDate).getTime();
+			let _end = new Date(detailObj.endDate).getTime();
+			let beginArr = detailObj.beginDate.split("-");
+			let endArr = detailObj.endDate.split("-");
+			let beginDate = beginArr[1] + "月"+beginArr[2] +"日";
+			let endDate = endArr[1] + "月"+endArr[2] +"日";
+			let beginTime = detailObj.beginTime.substr(0,5);
+			let endTime = detailObj.endTime.substr(0,5);
+
+			function weekFm(date){
+				let weekIndex = new Date(date).getDay();
+				let weekStr = ["日", "一", "二", "三", "四", "五", "六"]
+				return weekStr[weekIndex];
+			}
+
+			let startWeek = weekFm(detailObj.beginDate)
+			let endWeek = weekFm(detailObj.endDate)			
+
+			calendar.style.display = "none";
+			monitor.style.display = "none";
+			sHeader.style.display = "none";
+			scheduleList.style.display = "none";
+			detailPage.style.display = "block";
+			
+			
+			if(_remind == undefined){
+				_remind = "日程开始时";
+			}else{
+			//console.log(typeof Number(_remind))
+			let _index = Number(_remind)
+				_remind = remindArr[_index]
+				
+			}
+	
+			let detailContent = document.querySelector(".detail-page .schedule-content")
+			
+			var str;
+			//开始结束是同一天分三行显示，不是同一天分两行显示
+			if(_start == _end){
+				str = `<div class="detail-title">
+					  		<span>${detailObj.note}</span>
+					  	</div>
+					  	<div class="shadow"></div>
+					  	
+					  	<div class="detail-form detail-time">
+					  		<p>${beginDate}</p>
+					  		<p>周${startWeek}</p>
+					  		<p>${beginTime}-${endTime}</p>
+					  	</div>
+					  	<div class="shadow"></div>
+					  	
+					  	<div class="detail-form detail-remind">
+					  		<span>${_remind}提醒</span>
+					  	</div>`
+			}else{
+				str = `<div class="detail-title">
+					  		<span>${detailObj.note}</span>
+					  	</div>
+					  	<div class="shadow"></div>
+					  	
+					  	<div class="detail-form detail-time">
+					  		<p>开始：${beginDate} 周${startWeek} <span class="detailTm">${beginTime}</span></p>
+							<p>结束：${endDate} 周${endWeek} <span class="endDetailTm">${endTime}</span></p>
+					  	</div>
+					  	<div class="shadow"></div>
+					  	
+					  	<div class="detail-form detail-remind">
+					  		<span>${_remind}提醒</span>
+					  	</div>`
+			}
+			
+			detailContent.innerHTML = str;
+			
+				//let detailTm = document.querySelector(".detailTm");
+				//let endDetailTm = document.querySelector(".endDetailTm");
+				//if(detailTm){
+				//	if(detailObj.allDayFlag == "0"){
+				//		detailTm.style.display = "none";
+				//		endDetailTm.style.display = "none";
+				//	}
+				//}
+				
+			}
+		})	
+
+		}
+
+		//删除或修改弹框
+		function delOrchange() {
+			delChange.style.display = "block";
+		}
+		//删除日程
+		function delSchedel() {
+
+			var jsonString = JSON.stringify({
+				"calendarId": detailObj.calendarId
+			});
+			$.ajax({
+	        url:"http://localhost:8080/daily/DailyDeleteServlet",
+	        contentType:"text/plain",
+	        data: jsonString,
+	        dataType:"json",
+	        type:"POST",
+	        success:function (data) {
+				//console.log("删除DailyDelateServlet:",data)
+					if(data.flag == "true"){
+						delChange.style.display = "none";
+								detailPage.style.display = "none";
+								calendar.style.display = "block";
+								sHeader.style.display = "block";
+								scheduleList.style.display = "block";
+								
+								getDateList()
+					}
+				}
+	        
+	    })
+
+}
+
+		
+
+
+//////////////修改日程表单项
+		var changeNote = document.querySelector(".changeNote");
+		var changeAllday = document.querySelector(".changeAllday");
+		var changeRemind = document.querySelector(".changeRemind");
+		var changeRepeat = document.querySelector(".changeRepeat");
+		var changePlace = document.querySelector(".changePlace");
+		var receivedUser = document.querySelector(".change-page .receivedUser");
+		var privacyflag  = document.getElementsByName("changePrivacy");
+		var changeMemo = document.querySelector("#changeMemo");
+		
+
+		
+		//修改日程回显
+		function chSchedel() {
+			var modify_start=document.getElementsByClassName("Wdate")[2];
+			var modify_end=document.getElementsByClassName("Wdate")[3];
+			
+						
+			//查询接收人列表
+			var jsonString = JSON.stringify({
+				"userId": "111001"
+			});
+			$.ajax({
+	        url:"http://localhost:8080/daily/UserListServlet",
+	        contentType:"text/plain",
+	        data: jsonString,
+	        dataType:"json",
+	        type:"POST",
+	        success:function (data) {
+				//console.log("新增接收人列表查询UserListServlet:",data)
+				receivedArr = data.users	
+				for (var k = 0; k < receivedArr.length; k++) {
+					receivedArr[k].flag = false;
+				}
+///////////////////////////////////////////////////////////
+//查询日程详情
+			var DetailString  = JSON.stringify({"calendarId":detailObj.calendarId});
+			$.ajax({
+	        url:"http://localhost:8080/daily/DailyDetailServlet",
+	        contentType:"text/plain",
+	        data: DetailString,
+	        dataType:"json",
+	        type:"POST",
+	        success:function (data) {
+				console.log("修改前查询日程详情:",data)
+				changeSubData = data.content[0];
+
+			
+			//console.log(changeSubData)
+			var privacyVal;
+
+			changeNote.value = changeSubData.note;
+			if(changeSubData.allDayFlag == "0"){
+				changeAllday.checked = true;
+			}else{
+				changeAllday.checked = false;
+			}
+			
+			modify_start.value = changeSubData.beginDate + " " + changeSubData.beginTime;
+			modify_end.value = changeSubData.endDate + " " + changeSubData.endTime;
+			
+			changeRemind.innerHTML = shRemindFlag(changeSubData.remindFlag);
+			changeRepeat.innerHTML = shRepeatFlag(changeSubData.repeatFlag);
+
+			changePlace.value = changeSubData.address;
+			if(changeSubData.privacyFlag == "0"){
+				privacyVal = "私人"
+			}else{
+				privacyVal = "公开"
+			}
+			for (var i = 0; i < privacyflag.length; i++) {
+				if(privacyflag[i].value == privacyVal){
+					privacyflag[i].checked = true;
+				}else{
+					privacyflag[i].checked = false;
+				}
+			}
+			//接收人
+			var thisReceiver = changeSubData.receivedUsers;
+			let thisName = []
+			if(thisReceiver.length > 0){
+				for (var i = 0; i < thisReceiver.length; i++) {
+					thisReceiver[i].flag = true;
+					thisName.push(thisReceiver[i].userName)
+				}
+			}
+			
+			
+			changeMemo.value = changeSubData.memo;
+			
+			delChange.style.display = "none";
+			detailPage.style.display = "none";
+			changePage.style.display = "block";
+
+
+				for (var k = 0; k < receivedArr.length; k++) {
+					if(thisName.indexOf(receivedArr[k].userName) != -1){
+						receivedArr[k].flag = true;
+					}else{
+						receivedArr[k].flag = false;
+					}
+				}
+				
+				console.lo
+
+				}	
+			})
+///////////////////////////////////////////////////////////
+				
+			}
+		})
+			
+			
+			
+			
+		}
+		
+		//提交修改日程
+		function submitChange(){
+		submitBtn = 2;			var modify_start=document.getElementsByClassName("Wdate")[2].value;
+			var modify_end=document.getElementsByClassName("Wdate")[3].value;
+//			console.log(modify_start,modify_end)
+			
+			changeSubData.note = changeNote.value;
+			if(changeAllday.checked == true){
+				changeSubData.allDayFlag = "0";
+			}else{
+				changeSubData.allDayFlag = "1";
+			}
+
+			changeSubData.beginDate = modify_start.substr(0,10);
+			changeSubData.beginTime = modify_start.substr(11);
+			changeSubData.endDate = modify_end.substr(0,10);
+			changeSubData.endTime = modify_end.substr(11);
+			
+			//结束日期不能晚于开始日期，同一天结束时间不能晚于开始时间
+			let changeFlag = validTime(changeSubData.beginDate,changeSubData.endDate,changeSubData.beginTime,changeSubData.endTime)
+			//选择全天，时间为00:00:00-23:59:59
+			if(changeAllday.checked == true){
+				changeSubData.beginTime="00:00:00";
+				changeSubData.endTime="23:59:59";
+			}
+			
+			changeSubData.remindFlag = fmRemindFlag(changeRemind.innerHTML);
+			changeSubData.repeatFlag = fmRepeatFlag(changeRepeat.innerHTML);
+			changeSubData.address = changePlace.value;
+			//changeSubData.receivedUsers = requestObj;
+			//console.log(33333,changeSubData)
+			if(requestObj.receivedUsers == undefined){
+
+			}else{
+			requestObj.receivedUsers.push(
+			{userId:"111001",userName:"张三",flag:true});
+			changeSubData.receivedUsers = JSON.stringify(requestObj.receivedUsers);
+			}			
+			//console.log(requestObj)
+			
+			let subprivacyVal;
+			for (var i = 0; i < privacyflag.length; i++) {
+				if(privacyflag[i].checked == true){
+					subprivacyVal = privacyflag[i].value;
+				}
+			}
+			if(subprivacyVal == "私人"){
+				changeSubData.privacyFlag = "0";
+			}else{
+				changeSubData.privacyFlag = "1";
+			}
+			
+			
+			changeSubData.memo = changeMemo.value;
+			
+			
+			var jsonString = JSON.stringify(changeSubData);
+			
+			if(changeFlag && submitBtn==2){
+				console.log("修改提交：",changeSubData)
+				$.ajax({
+				url:"http://localhost:8080/daily/DailyEditServlet",
+				contentType:"text/plain",
+				data: jsonString,
+				dataType:"json",
+				type:"POST",
+				success:function (data) {
+							console.log("修改提交DailyEditServlet:",data)
+					changeSubData = data;
+					if(data.flag == "true"){
+								changePage.style.display = "none";
+								
+						showDateIndex(changeSubData)
+					}
+					}
+
+			})
+			}
+			
+
+		}
+
+
+		//渲染全天列表
+		function renderAlldayList(arr) {
+			let listStr = "";
+			for(var i = 0; i < arr.length; i++) {
+				listStr += '<li>' +
+					'<div class="sch-list-time">' +
+					'<p>全天</p>' +
+					'</div>' +
+					'<div class="sch-list-content">' +
+					'<p>' + arr[i].note + '</p>' +
+					'</div>' +
+					'</li>'
+			}
+			allDayList.innerHTML = listStr;
+
+			var allDayArr = document.querySelectorAll(".allDayList li")
+			for(var i = 0; i < allDayArr.length; i++) {
+				(function(j) {
+					allDayArr[j].onclick = function() {
+						showDateIndex(arr[j])
+						//	      showDateIndex(j)
+					}
+				})(i);
+			}
+		}
+		//渲染非全天列表
+		function renderDateList(arr) {
+			
+			let listStr = "";
+			for(var i = 0; i < arr.length; i++) {
+				let beginTime = arr[i].beginTime.substr(0,5);
+				let endTime;
+				//console.log(arr[i].beginDate)
+				if(arr[i].beginDate != arr[i].endDate){
+					endTime = "开始";
+				}else{
+					endTime = arr[i].endTime.substr(0,5)
+				}
+				
+				listStr += `<li>
+  			<div class="sch-list-time">
+  				<p>${beginTime}</p>
+  				<p>${endTime}</p>
+  			</div>
+  			<div class="sch-list-content">
+  				<p>${arr[i].note}</p>
+  			</div>
+  		</li>`
+			}
+			schList.innerHTML = listStr;
+
+			var schArr = document.querySelectorAll(".sch-list li")
+			for(var i = 0; i < schArr.length; i++) {
+				(function(j) {
+					schArr[j].onclick = function() {
+						showDateIndex(arr[j])
+					}
+				})(i);
+			}
+		}
+
+		
+		//弹框部分
+		var popObj = {};
+		var popUp = document.querySelector(".pop-up");
+		var poplist = document.querySelector(".pop-list");
+		var remindFlag = document.querySelector(".remind-flag");
+		var repeatFlag = document.querySelector(".repeat-flag");
+		var receivedUser = document.querySelector(".receivedUser");
+
+		var repeatArr = ["不重复", "每天", "每周", "每月", "每年"];
+		var remindArr = ["无", "日程开始时", "提前5分钟", "提前15分钟", "提前30分钟", "提前一小时", "提前一天"];
+		var receivedArr=[];
+
+		//关闭弹框
+		function closePop() {
+			popUp.style.display = "none";
+		}
+		
+function showPop(arr,type,page){
+		if(type == 3){
+			arr = receivedArr;
+		}
+		popObj.flag = type;
+		popUp.style.display="block";
+		console.log("receivedArr:",receivedArr)
+		var popstr = '';
+		let itemType = typeof arr[0];
+		if(itemType == "string"){
+			if(type == 1){
+				for (let i = 0; i < arr.length; i++) {
+					popstr += `<li onclick="popVal1(event)">${arr[i]}</li>`
+				}
+				poplist.innerHTML = popstr;
+				for (var i = 0; i < arr.length; i++) {
+					if(remindFlag.innerHTML == arr[i] && page == 1){
+						poplist.children[i].style.color = "#108EE9";
+					}
+					if(changeRemind.innerHTML == arr[i] && page == 2){
+						poplist.children[i].style.color = "#108EE9";
+					}
+				}
+			}else if(type == 2){
+				for (let i = 0; i < arr.length; i++) {
+					popstr += `<li onclick="popVal2(event)">${arr[i]}</li>`
+				}
+				poplist.innerHTML = popstr;
+				for (var i = 0; i < arr.length; i++) {
+					if(repeatFlag.innerHTML == arr[i] && page == 1){
+						poplist.children[i].style.color = "#108EE9";
+					}
+					if(changeRepeat.innerHTML == arr[i] && page == 2){
+						poplist.children[i].style.color = "#108EE9";
+					}
+				}
+			}
+			
+		}else if(itemType == "object"){
+			
+			for (let i = 0; i < arr.length; i++) {
+				popstr += '<li onclick="popVal(event,'+i+')">'+arr[i].userName+'</li>'
+			}
+			poplist.innerHTML = popstr;
+			var poplistArr = poplist.children;
+			for (var i = 0; i < arr.length; i++) {
+				if(arr[i].flag == true){
+					poplistArr[i].style.color = "#108EE9"
+				}
+			}
+		}
+	}
+
+
+	
+	//弹框选中
+		function popVal1(event,index){
+			let popli = event.target.parentNode.children;
+			for(var i = 0; i < popli.length; i++) {
+				popli[i].style.color = "#000000";
+			}
+
+			event.target.style.color = "#108EE9";
+
+			popObj.remindflag = event.target.innerHTML;
+		
+		}
+		function popVal2(event,index){
+			let popli = event.target.parentNode.children;
+			for(var i = 0; i < popli.length; i++) {
+				popli[i].style.color = "#000000";
+			}
+
+			event.target.style.color = "#108EE9";
+
+			popObj.repeatflag = event.target.innerHTML;
+		
+		}
+		
+	function popVal(event,index){
+		if(receivedArr[index].flag==false){
+			receivedArr[index].flag=true;
+		}else if(receivedArr[index].flag==true){
+			receivedArr[index].flag=false;
+		}
+		
+//		console.log(receivedArr)
+		//选中的变颜色
+		let popli = event.target.parentNode.children;
+		requestObj.receivedUsers =[];
+			for(var i=0;i<receivedArr.length;i++){
+				if(receivedArr[i].flag==true){
+					popli[i].style.color="#108EE9";
+					requestObj.receivedUsers.push(receivedArr[i]);
+					
+				}else{
+					popli[i].style.color="#000000";
+				}
+			}
+//			console.log(requestObj)
+		}
+	
+	
+	//弹框确定
+	function popConfirm(){
+		//console.log(changeSubData)
+		switch (popObj.flag){
+			case 1:
+				if(popObj.remindflag == undefined){
+					remindFlag.innerHTML="日程开始时";
+				}else{
+					changeRemind.innerHTML=popObj.remindflag;
+					remindFlag.innerHTML=popObj.remindflag;
+				}
+				requestObj.remindFlag = popObj.remindflag;
+				break;
+			case 2:
+				if(popObj.repeatflag == undefined){
+					repeatFlag.innerHTML="不重复";
+				}else{
+					repeatFlag.innerHTML=popObj.repeatflag;
+					changeRepeat.innerHTML=popObj.repeatflag;
+				}
+
+				requestObj.repeatflag = popObj.repeatflag;
+				break;
+			case 3:
+				break;
+			default:
+				break;
+		}
+		popUp.style.display="none";
+	}
+
+  function fmRepeatFlag(flag){
+    switch (flag){
+      case "不重复":
+        return "0"
+        break;
+      case "每天":
+        return "1"
+        break;
+      case "每周":
+        return "2"
+        break;
+      case "每月":
+        return "3"
+        break;
+      case "每年":
+        return "4"
+        break;
+      default:
+        break;
+    }
+    
+  }
+  
+    function fmRemindFlag(flag){
+	console.log(flag)
+    switch (flag){
+      case "无":
+        return "0"
+        break;
+      case "日程开始时":
+        return "1"
+        break;
+      case "提前5分钟":
+        return "2"
+        break;
+      case "提前15分钟":
+        return "3"
+        break;
+      case "提前30分钟":
+        return "4"
+        break;
+      case "提前一小时":
+        return "5"
+        break;
+      case "提前一天":
+        return "6"
+        break;
+      default:
+        break;
+    }
+    
+  };
+    function shRepeatFlag(flag){
+    switch (flag){
+      case "0":
+        return  "不重复"
+        break;
+      case "1":
+        return "每天"
+        break;
+      case "2":
+        return "每周"
+        break;
+      case "3":
+        return "每月"
+        break;
+      case "4":
+        return "每年"
+        break;
+      default:
+        break;
+    }
+    
+  };
+
+    function shRemindFlag(flag){
+    switch (flag){
+      case "0":
+        return "无"
+        break;
+      case "1":
+        return "日程开始时"
+        break;
+      case "2":
+        return "提前5分钟"
+        break;
+      case "3":
+        return "提前15分钟"
+        break;
+      case "4":
+        return "提前30分钟"
+        break;
+      case "5":
+        return "提前一小时"
+        break;
+      case "6":
+        return "提前一天"
+        break;
+      default:
+        break;
+    }
+    
+  };
+  
+    function validTime(beginDate,endDate,beginTime,endTime){
+		let _addFlag = true;
+        beginDate = new Date(beginDate).getTime()
+        endDate = new Date(endDate).getTime()
+        beginTime = Number(beginTime.split(":").join(""))
+        endTime = Number(endTime.split(":").join(""))
+        
+        if(endDate<beginDate){
+          alert("结束日期不能晚于开始日期");
+          _addFlag = false;
+        }else if(endDate==beginDate && endTime<beginTime){
+          alert("结束时间不能晚于开始时间")
+          _addFlag = false;
+        }else{
+		_addFlag = true;
+		}
+		return _addFlag;
+      }
+
+	</script>
+
+</html>

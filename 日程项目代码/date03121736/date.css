@@ -1,0 +1,489 @@
+/* 整体设置 */
+*{margin:0px;padding:0px;}
+body{
+	background: #F6F6F6;
+}
+
+
+.left {
+	border: solid #FFFFFF;
+	border-width: 0 2px 2px 0;
+	display: inline-block;
+	padding: 6px;
+	margin-left: 10px;
+	transform: rotate(135deg);
+	-webkit-transform: rotate(135deg);
+}
+
+.right {
+	display: inline-block;
+	padding: 5px;
+	border: solid #CCCCCC;
+	border-width: 0 1px 1px 0;
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+}
+.upIco{
+	text-align: center;
+	padding: 6px 0;
+}
+.upIco .up{
+	display: inline-block;
+	padding: 6px;
+	border: solid #CCCCCC;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+}
+.leftIco{
+	position: absolute;
+}
+.rightIco {
+	display: inline-block;
+}
+
+
+/**
+ * 设置日历的大小
+ */
+#monitor{
+	display: none;
+	background: #FFFFFF;
+}
+.calendar{
+  width: 100%;
+  display: block;
+  margin: auto;
+  background: #FFFFFF;
+}
+/*.calendar-body-box{
+	height: 350px;
+}*/
+/**
+ * 设置日历顶部盒子
+ */
+.calendar .calendar-title-box{
+  margin: auto;
+  position: relative;
+  width: 350px;
+  height: 50px;
+  line-height: 50px;
+  text-align:center;
+  border-bottom: 1px solid #ddd;
+}
+
+/**
+ * 设置上个月的按钮图标
+ */
+.calendar .prev-month {
+  position: absolute;
+  top: 19px;
+  left: 0px;
+  display: inline-block;
+  width: 0px;
+  height: 0px;
+  border-left: 0px;
+  border-top: 6px solid transparent;
+  border-right: 8px solid #999;
+  border-bottom: 6px solid transparent;
+  cursor: pointer;
+}
+
+/**
+ * 设置下个月的按钮图标
+ */
+.calendar .next-month {
+  position: absolute;
+  top: 19px;
+  right: 0px;
+  display: inline-block;
+  width: 0px;
+  height: 0px;
+  border-right: 0px;
+  border-top: 6px solid transparent;
+  border-left: 8px solid #999;
+  border-bottom: 6px solid transparent;
+  cursor: pointer;
+}
+
+
+/* 设置日历表格样式 */
+.calendar-table{
+  width: 100%;
+  border-collapse: collapse;
+  text-align:center;
+}
+
+/* 表格行高 */
+.calendar-table tr{
+  height: 50px;
+  line-height: 50px;
+}
+
+/* 当前天 颜色特殊显示 */
+.currentDay {
+  color: #FFFFFF;
+  background: #108EE9;
+  border-radius: 50%;
+}
+
+/* 本月 文字颜色 */
+.currentMonth {
+	width: 40px;
+	height: 40px;
+  color: #999;
+}
+
+/* 其他月颜色 */
+.otherMonth{
+  color: #ede;
+}
+
+/*
+ *日程详情
+ * */
+.detail-page{
+	display: none;
+	/*padding: 10px;*/
+}
+.detail-page .detail-title{
+	min-height: 80px;
+	padding: 10px;
+	background: #FFFFFF;
+}
+.detail-page .detail-title span{
+	word-break: break-word;
+}
+.detail-page .detail-form{
+	background: #FFFFFF;
+	padding: 10px;
+}
+
+.detail-page .detail-time p{
+	padding-bottom: 10px;
+}
+
+/*删除修改弹框*/
+.del-change{
+	display: none;
+	position: fixed;
+	top: 50px;
+	right: 0;
+	z-index: 102;
+	background: #FFFFFF;
+	border: solid 1px #E5E5E5;
+	box-shadow: 0 0 2px 0 #000000;
+}
+.del-change p{
+	width: 130px;
+	padding: 5px;
+	text-align: center;
+	border-top: solid 1px #E5E5E5;
+}
+.change-page{
+	display: none;
+}
+.active{
+	color: blue;
+}
+/*
+ * 日程列表
+ * */
+.schedule-list{
+	margin-top: 10px;
+	padding: 10px 10px 20px;
+	background: #FFFFFF;
+	width: 100%;
+	/*height: 400px;*/
+	box-sizing: border-box;
+}
+.sch-list-day{
+	padding: 10px;
+	font-size: 18px;
+	text-align: center;
+	border-bottom: solid 1px #E5E5E5;
+	margin-bottom: 10px;
+}
+.sch-list-day span{
+	display: inline-block;
+	padding: 0 6px;
+}
+.allDayList li,
+ul.sch-list li{
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	padding: 10px;
+	box-sizing: border-box;
+}
+/*ul.sch-list li:hover{
+	background: #E5E5E5;
+}*/
+.allDayList li p,
+ul.sch-list li p{
+	padding: 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+	text-overflow: ellipsis;
+}
+.allDayList li .sch-list-time{
+	width: 40px;
+	padding-right: 10px;
+	border-right: solid 1px red;
+	font-size: 14px;
+	color: #9E9E9E;
+	text-align: center;
+}
+ul.sch-list li .sch-list-time{
+	width: 40px;
+	padding-right: 10px;
+	border-right: solid 1px #108EE9;
+	font-size: 14px;
+	color: #9E9E9E;
+}
+.allDayList li .sch-list-content{
+	width:50%;
+	flex: 1;
+	font-size: 14px;
+	margin-left: 10px;
+	border-bottom: solid 1px #EEEEEE;
+}
+ul.sch-list li .sch-list-content{
+	width:50%;
+	flex: 1;
+	font-size: 14px;
+	line-height: 40px;
+	margin-left: 10px;
+	border-bottom: solid 1px #EEEEEE;
+}
+
+/*日程首页头部*/
+.sHeader{
+	position: sticky!important;
+	top: 0;
+	z-index: 99;
+}
+.sHeader .header-title{
+	width: 100%;
+	text-align: center;
+	font-size: 20px;
+}
+.add-schedule{
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 28px;
+	/*width: 50px;
+    height: 50px;
+    line-height: 46px;
+    background: #108EE9;
+    color: #ffffff;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 50%;
+    position: fixed;
+    right: 10px;
+    bottom: 160px;*/
+}
+
+
+/*新建日程部分*/
+.schedule-page{
+	display: none;
+}
+/*新建日程头部*/
+.header{
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 6px;
+	background: #108EE9;
+	color: #FFFFFF;
+	position: relative;
+}
+.header-title{
+	width: 100%;
+	text-align: center;
+}
+.header .header-save{
+	position: absolute;
+	right: 10px;
+}
+
+.shadow{
+	width: 100%;
+	height: 10px;
+	background: #eeeeee;
+}
+
+.schedule-content{
+	width: 100%;
+	/*padding: 0 20px;*/
+}
+.schedule-title{
+	background: #FFFFFF;
+	padding: 0 20px;
+	border-bottom: solid 1px #f1f1f1;
+}
+.schedule-form{
+	width: 100%;
+	height: 40px;
+	padding-left: 20px;
+	line-height: 40px;
+	border-bottom: solid 1px #f1f1f1;
+	box-sizing: border-box;
+	background: #FFFFFF;
+}
+.title{
+	border: 0;
+    padding: 10px 0;
+    font-family: "微软雅黑";
+    color: #333;
+    outline: none;
+    width: 100%;
+    height: 100px;
+    font-size: 14px;
+    box-sizing: border-box;
+    word-break: break-all;
+}
+.schedule-form .iptText{
+	border: none;
+	width: 100%;
+	height: 34px;
+	line-height: 36px;
+	font-size: 14px;
+	outline: none;
+}
+
+.remind-time{
+	display: flex;
+	justify-content: space-between;
+}
+.remind-allBtn{
+	width: 50px;
+	height: 22px;
+	/*border-radius: 20px;*/
+	margin-top: 8px;
+	border: solid 1px #e5e5e5;
+	box-shadow: 0 0 1px 1px #E5E5E5;
+}
+
+/*全天滑块开关*/
+.checke{
+    position: relative;
+    -webkit-appearance: none;
+    width: 50px;
+    height: 27px;
+    line-height: 28px;
+    border: solid 1px #E5E5E5;
+    border-radius: 24px;
+    outline: none;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+.checke:before{
+    position: absolute;
+    left: 0;
+    content: '';
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: solid 1px #E5E5E5;
+    box-shadow: 1px 0px 2px #ddd;
+    transition: all 0.2s linear;
+}
+ 
+.checke:checked{
+   background: #18ff0a;
+}
+.checke:checked:before{
+    left: 25px;
+    transition: all 0.2s linear;
+}
+/*开始结束部分*/
+.remind-select{
+	width: 100%;
+	padding-left: 20px;
+	display: flex;
+	box-sizing: border-box;
+	background: #FFFFFF;
+}
+.remind-select .select-time{
+	width: 48%;
+	padding: 5px 0;
+}
+.remind-select .select-time p{
+	padding: 5px 0;
+	color: #9E9E9E;
+}
+.remind-select .select-time .clockTime{
+	color: #000000;
+}
+.remind-select .start{
+	border-right: solid 1px #E5E5E5;
+}
+.remind-select .end{
+	padding-left: 10px;
+}
+/*右侧选择*/
+.select-before {
+	margin-right: 10px;
+}
+.select-before span{
+	color: #9E9E9E;
+}
+.privacy{
+	display: flex;
+	justify-content: flex-start!important;
+}
+.privacyRadio{
+	margin-left: 20px;
+}
+.privacyRadio label{
+	display: inline-block;
+	margin-left: 30px;
+}
+.privacyRadio span{
+	display: inline-block;
+	margin-left: 2px;
+}
+
+/*弹框*/
+
+.pop-up{
+	width: 100%;
+	height: 100%;
+	background: rgb(0,0,0,0.5);
+	z-index: 101;
+	position: fixed;
+	bottom: 0;
+	display: none;
+}
+.pop-wrap{
+	width: 100%;
+	z-index: 100;
+	position: absolute;
+	bottom: 0;
+	background: #fff;
+}
+.pop-check{
+	display: flex;
+	justify-content: space-between;
+	border-bottom: solid 1px #f1f1f1;
+}
+.pop-check>div{
+	color: #108EE9;
+	padding: 10px;
+}
+.pop-wrap ul{
+	width: 100%;
+	margin-bottom: 20px;
+}
+.pop-wrap ul li{
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	border-bottom: solid 1px #f1f1f1;
+}
