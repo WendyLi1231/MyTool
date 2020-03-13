@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+	</body>
+	<script>
+		(function() {
+			//给body强制定义高度
+			var windowHeight = $(window).height(),
+				$body = $("body");　　
+			$("body").css("height", windowHeight); //重要代码
+			$("body").on("touchstart", function(e) {　　　　 //e.preventDefault();//会使所有的触屏都失效，不能用
+				startX = e.originalEvent.changedTouches[0].pageX, 　　　　
+				startY = e.originalEvent.changedTouches[0].pageY;　　
+			});　　
+			$("body").on("touchmove", function(e) {　　　　 //e.preventDefault();
+				moveEndX = e.originalEvent.changedTouches[0].pageX, 　　　　
+				moveEndY = e.originalEvent.changedTouches[0].pageY, 　　　　
+				X = moveEndX - startX, 　　　　
+				Y = moveEndY - startY;
+				if(Math.abs(X) > Math.abs(Y) && X > 0) {　　　　　　
+					alert("right");　　　　
+				}　　　　
+				else if(Math.abs(X) > Math.abs(Y) && X < 0) {　　　　　　
+					alert("left");　　　　
+				}　　　　
+				else if(Math.abs(Y) > Math.abs(X) && Y > 0) {　　　　　　
+					alert("bottom");　　　　
+				}　　　　
+				else if(Math.abs(Y) > Math.abs(X) && Y < 0) {　　　　　　
+					alert("top");　　　　
+				}　　　　
+				else {　　　　　　
+					alert("just touch");　　　　
+				}　　
+			});
+		})();
+	</script>
+
+</html>

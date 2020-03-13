@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="remind-select" style="display: flex;">
+			<div class="select-time start">
+				<span>开始</span>
+				<input type="text" class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+			</div>
+			<div class="select-time end" style="margin-left: 30px;">
+				<span>结束</span>
+				<input type="text" class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+			</div>
+		</div>
+		<button onclick="submitData_create()" style="margin-top: 30px;">提交</button>
+	</body>
+	<script src="My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript">
+		function submitData_create() {
+			var create_start = document.getElementsByClassName("Wdate")[0].value;
+			var craete_end = document.getElementsByClassName("Wdate")[1].value;
+			console.log("start:",create_start)
+			console.log("end:",craete_end)
+		}
+	</script>
+
+</html>
