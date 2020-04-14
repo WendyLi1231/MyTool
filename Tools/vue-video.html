@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--
+		vue解决h5 video视频 ios和安卓兼容问题:
+			解决问题：不全屏播放 播放一次就不能播放，IOS一开始是白屏，返回后不能播放
+
+			核心是判断手机为安卓还是ios，然后分开写
+			下面是几个核心的关键代码：
+			
+			controls 解决播放一次就不能播放
+			webkit-playsinline="" playsinline=“true” 解决一播放就是全屏
+			preload=“none” 解决浪费资源问题 一打开网页就加载mp4 造成不必要的损失
+			poster 视频为开始时，显示的图片
+			
+		-->
+		<template>
+			<div class="_contenter flex_center">
+			  <div class="videoBox">
+			    <video
+			      v-if="mobile=='android'"
+			      id="video"
+			      width="100%"
+			      height="100%"
+			      x5-video-player-fullscreen="true"
+			      x5-playsinline
+			      playsinline
+			      webkit-playsinline
+			      preload="none"
+			      :src="videoSrc"
+			      :poster="videoImg"
+			      controls
+			    ></video>
+			    <video
+			      v-if="mobile=='iPhone'"
+			      id="video"
+			      width="100%"
+			      height="100%"
+			      controls
+			      preload="none"
+			      webkit-playsinline
+			      playsinline="true"
+			      :poster="videoImg"
+			      :src="videoSrc"
+			    ></video>
+			  </div>
+			</div>
+		</template>
+		<script>
+		export default {
+		  data() {
+		    return {
+		      videoSrc: "",
+		      videoImg: "../assets/images/play.png",
+		      mobile: "",
+		      text: ""
+		    };
+		  },
+		  created() {
+		    this.videoSrc = localStorage.getItem("remark");
+		    this.text = navigator.appVersion;
+		    this.mobile =
+		      navigator.appVersion.indexOf("iPhone") !== -1 ? "iPhone" : "android";
+		  },
+		};
+		</script>
+	</body>
+</html>
